@@ -112,6 +112,7 @@ def main():
             temp_c = round(calc_temp, 1)
             humidity = round(sense.get_humidity(), 0)
             pressure = round(sense.get_pressure())
+            time.sleep(1)
             print(current_second, "Lampotila: %sC, Ilmanpaine: %s Mbar, Kosteus: %s%%" % (temp_c, pressure, humidity))
 
             # nykyinen kellonaika
