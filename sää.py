@@ -55,13 +55,13 @@ def get_cpu_temp():
     res = os.popen('vcgencmd measure_temp').readline()
     return float(res.replace("temp=", "").replace("'C\n", ""))
 
-# Kaytetaan kolmen lukeman keskiarvoa
+# Kaytetaan liikkuva keskiarvoa tasoittamaan tuloksia
 def get_smooth(x):
     # onko oliota t
     if not hasattr(get_smooth, "t"): # argumentteina olio ja teksti. Jos totta niin True, False jos ei
-        # jos ei niin tehdaan se
+        # tehdaan se
         get_smooth.t = [x, x, x]
-    # pyoristetaan arvoja
+    # siirretaan arvot
     get_smooth.t[2] = get_smooth.t[1]
     get_smooth.t[1] = get_smooth.t[0]
     get_smooth.t[0] = x
@@ -72,10 +72,12 @@ def get_smooth(x):
 
 def get_temp():
 
+    # http://yaab-arduino.blogspot.com/2016/08/accurate-temperature-reading-sensehat.html
     # Otetaan kosteus ja ilmanpaine lukema
     t1 = sense.get_temperature_from_humidity()
     t2 = sense.get_temperature_from_pressure()
     # olio t on molempien sensorien arvojen keskiarvo
+    
     t = (t1 + t2) / 2
     # prosessorin C
     t_cpu = get_cpu_temp()
